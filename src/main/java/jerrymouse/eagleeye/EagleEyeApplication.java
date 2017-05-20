@@ -19,14 +19,9 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
-@Slf4j
-@RestController
 @SpringBootApplication
 @EnableConfigurationProperties(TargetTomcatProperties.class)
 public class EagleEyeApplication {
-
-    public static final String UNDEPLOY_OK_PREFIX = "OK - Undeployed application at context path";
-    public static final String APP_LIST_OK_PREFIX = "OK - Listed applications for virtual host";
 
     public static void main(String[] args) {
         SpringApplication.run(EagleEyeApplication.class, args);
@@ -38,6 +33,16 @@ public class EagleEyeApplication {
         restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor("us", "su"));
         return restTemplate;
     }
+
+}
+
+@Slf4j
+@CrossOrigin(origins = "http://localhost:4200")
+@RestController
+class AppsController {
+
+    public static final String UNDEPLOY_OK_PREFIX = "OK - Undeployed application at context path";
+    public static final String APP_LIST_OK_PREFIX = "OK - Listed applications for virtual host";
 
     @Autowired
     RestOperations restTemplate;
@@ -53,7 +58,7 @@ public class EagleEyeApplication {
     }
 
     @GetMapping("config")
-    TargetTomcatProperties config(){
+    TargetTomcatProperties config() {
         return configProps;
     }
 

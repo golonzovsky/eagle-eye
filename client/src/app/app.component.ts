@@ -1,5 +1,6 @@
 import {Component, OnInit} from "@angular/core";
 import {Http} from "@angular/http";
+import {DeployManagerService} from "./deploy-manager.service";
 
 @Component({
   selector: 'app-root',
@@ -22,11 +23,11 @@ import {Http} from "@angular/http";
             </thead>
             <tbody>
             <tr *ngFor="let app of apps">
-              <th>{{app.contextPath}}</th>
+              <th><a [href]="tomcatHost + app.contextPath">{{app.contextPath}}</a></th>
               <td>{{app.running}}</td>
               <td>{{app.sessions}}</td>
               <td>{{app.docBase}}</td>
-              <td><span class="glyphicon glyphicon-search" aria-hidden="true"></span></td>
+              <td><i class="fa fa-times text-center" aria-hidden="true"></i></td>
             </tr>
             </tbody>
           </table>
@@ -41,134 +42,25 @@ import {Http} from "@angular/http";
       margin-top: 50px;
     }
 
-    .img {
-      position: sticky;
-      top: 0;
+    i.fa {
+      margin-left:20px;
+    }
+
+    i.fa:before {
+      cursor: pointer;
     }
   `]
 })
 export class AppComponent implements OnInit {
-  title = 'app works!';
   apps: Array<Application>;
+  tomcatHost: string;
 
-  constructor(private http: Http) {
+  constructor(private deployManagerService: DeployManagerService) {
   }
 
   ngOnInit(): void {
-    this.apps = [
-      {
-        "contextPath": "/manager",
-        "running": true,
-        "docBase": "test",
-        "sessions": 0,
-        "readOnly": true
-      },
-      {
-        "contextPath": "/test",
-        "running": true,
-        "docBase": "test",
-        "sessions": 0,
-        "readOnly": false
-      },
-      {
-        "contextPath": "/asdasdasd",
-        "running": true,
-        "docBase": "asdasdasd",
-        "sessions": 0,
-        "readOnly": false
-      },
-      {
-        "contextPath": "/notRunning",
-        "running": false,
-        "docBase": "notRunning",
-        "sessions": 0,
-        "readOnly": false
-      },
-      {
-        "contextPath": "/notRunning",
-        "running": false,
-        "docBase": "notRunning",
-        "sessions": 0,
-        "readOnly": false
-      },
-      {
-        "contextPath": "/notRunning",
-        "running": false,
-        "docBase": "notRunning",
-        "sessions": 0,
-        "readOnly": false
-      },
-      {
-        "contextPath": "/notRunning",
-        "running": false,
-        "docBase": "notRunning",
-        "sessions": 0,
-        "readOnly": false
-      },
-      {
-        "contextPath": "/notRunning",
-        "running": false,
-        "docBase": "notRunning",
-        "sessions": 0,
-        "readOnly": false
-      },
-      {
-        "contextPath": "/notRunning",
-        "running": false,
-        "docBase": "notRunning",
-        "sessions": 0,
-        "readOnly": false
-      },
-      {
-        "contextPath": "/notRunning",
-        "running": false,
-        "docBase": "notRunning",
-        "sessions": 0,
-        "readOnly": false
-      },
-      {
-        "contextPath": "/notRunning",
-        "running": false,
-        "docBase": "notRunning",
-        "sessions": 0,
-        "readOnly": false
-      },
-      {
-        "contextPath": "/notRunning",
-        "running": false,
-        "docBase": "notRunning",
-        "sessions": 0,
-        "readOnly": false
-      },
-      {
-        "contextPath": "/notRunning",
-        "running": false,
-        "docBase": "notRunning",
-        "sessions": 0,
-        "readOnly": false
-      },
-      {
-        "contextPath": "/notRunning",
-        "running": false,
-        "docBase": "notRunning",
-        "sessions": 0,
-        "readOnly": false
-      },
-      {
-        "contextPath": "/notRunning",
-        "running": false,
-        "docBase": "notRunning",
-        "sessions": 0,
-        "readOnly": false
-      },
-      {
-        "contextPath": "/notRunning",
-        "running": false,
-        "docBase": "notRunning",
-        "sessions": 0,
-        "readOnly": false
-      }
-    ];
+    this.deployManagerService.getApps().subscribe(apps => this.apps = apps);
+    this.deployManagerService.getTomcatHost().subscribe(tomcatHost => this.tomcatHost = tomcatHost);
   }
 
 }
@@ -179,4 +71,8 @@ export interface Application {
   docBase: string
   sessions: number
   readOnly: boolean
+}
+
+export interface Config {
+  tomcatHost: string
 }
