@@ -52,7 +52,7 @@ class AppsController {
 
     @DeleteMapping("undeploy")
     UndeployResult undeploy(@RequestParam("path") String path) {
-        if (!configProps.getBlockContexts().contains(path)) return new UndeployResult(false);
+        if (configProps.getBlockContexts().contains(path)) return new UndeployResult(false);
         //todo filter path
         String resp = restTemplate.getForObject(configProps.getManagerAddress() + "undeploy?path=" + path, String.class);
         return new UndeployResult(resp.startsWith(UNDEPLOY_OK_PREFIX));
