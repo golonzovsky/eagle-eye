@@ -3,5 +3,6 @@
 ### todo 
 - [x] undeploy
 - [x] icon
-- [ ] unactive list
+- [x] unactive list
 - [x] remove animation
+- [ ] up to date list (websocket?)
