@@ -50,7 +50,10 @@ export class AppListComponent implements OnInit {
 
   ngOnInit(): void {
     this.deployManagerService.getApps().subscribe(apps => this.apps = apps);
-    this.deployManagerService.getTomcatHost().subscribe(tomcatHost => this.tomcatHost = tomcatHost);
+    this.deployManagerService.getTomcatHost().subscribe(tomcatHost => {
+      console.log(" host " + tomcatHost);
+      return this.tomcatHost = tomcatHost;
+    });
   }
 
   private undeploy(app: Application) {
