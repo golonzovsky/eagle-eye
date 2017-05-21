@@ -19,4 +19,9 @@ export class DeployManagerService {
     return this.http.get("http://localhost:8181/config")
       .map(res => res.json().tomcatHost)
   }
+
+  public undeploy(path: string): Observable<boolean> {
+    return this.http.delete("http://localhost:8181/undeploy?path=" + path)
+      .map(res => res.json().success)
+  }
 }

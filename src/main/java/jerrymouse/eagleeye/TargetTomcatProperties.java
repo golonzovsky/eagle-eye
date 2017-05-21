@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import javax.validation.constraints.NotNull;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -13,6 +16,7 @@ import javax.validation.constraints.NotNull;
 public class TargetTomcatProperties {
     private String tomcatHost = "http://localhost:8080";
     private String managerPrefix = "/manager/text/";
+    private Set<String> blockContexts = new HashSet<>(Arrays.asList("/", "/manager"));
 
     @NotNull
     @JsonIgnore

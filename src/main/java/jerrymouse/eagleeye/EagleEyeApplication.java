@@ -52,6 +52,7 @@ class AppsController {
 
     @DeleteMapping("undeploy")
     UndeployResult undeploy(@RequestParam("path") String path) {
+        if (!configProps.getBlockContexts().contains(path)) return new UndeployResult(false);
         //todo filter path
         String resp = restTemplate.getForObject(configProps.getManagerAddress() + "undeploy?path=" + path, String.class);
         return new UndeployResult(resp.startsWith(UNDEPLOY_OK_PREFIX));
@@ -74,8 +75,13 @@ class AppsController {
                 .skip(1)
                 .map(s -> s.split(":"))
                 //.peek(propArr -> System.out.println("\n\narray:   " + Arrays.asList(propArr) + "\n\n"))
-                .map(props -> new Application(props[0], props[3], "running".equals(props[1]), Long.parseLong(props[2]), "manager".equals(props[0])))
+                .map(this::buildApp)
                 .collect(toList());
+    }
+
+    private Application buildApp(String[] props) {
+        boolean isReadOnly = configProps.getBlockContexts().contains(props[0]);
+        return new Application(props[0], props[3], "running".equals(props[1]), Long.parseLong(props[2]), isReadOnly);
     }
 }
 
