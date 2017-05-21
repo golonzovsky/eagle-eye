@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {DeployManagerService} from './deploy-manager.service';
+import {Application, DeployManagerService} from './deploy-manager.service';
 import {animate, style, transition, trigger} from '@angular/animations';
 
 @Component({
@@ -31,14 +31,13 @@ import {animate, style, transition, trigger} from '@angular/animations';
               <td class='hidden-xs-down'>{{app.sessions}}</td>
               <td class='hidden-xs-down'>{{app.docBase}}</td>
               <td class='hidden-xs-down'>
-                <i class='fa fa-times text-center' aria-hidden='true' (click)='undeploy(app)'></i>
-                <app-spinkit-wave></app-spinkit-wave>
+                <undeploy-action [app]="app" (undeployEvent)="undeploy($event)"></undeploy-action>
               </td>
             </tr>
             </tbody>
           </table>
         </div>
-        <div class='col-sm-4 hidden-xs-down'><img src=''/assets/jerry.jpg' width='150px'></div>
+        <div class='col-sm-4 hidden-xs-down'><img src='/assets/jerry.jpg' width='150px'></div>
       </div>
 
     </div>
@@ -49,13 +48,6 @@ import {animate, style, transition, trigger} from '@angular/animations';
       div.container, .table {
         margin-top: 50px;
       }
-    }
-
-    i.fa {
-      margin-left: 20px;
-      width: 20px;
-      height: 20px;
-      cursor: pointer;
     }
 
     img {
@@ -82,30 +74,8 @@ export class AppComponent implements OnInit {
   }
 
   private undeploy(app: Application) {
-    if (app.readOnly) {
-      return;
-    }
-    this.deployManagerService.undeploy(app.contextPath).subscribe(
-      isSuccess => {
-        if (isSuccess) {
-          this.apps = this.apps.filter(item => item !== app);
-        } else {
-          console.log('cannot delete.. must be stronger!!');
-        }
-      }
-    );
+    this.apps = this.apps.filter(item => item !== app);
   }
 
 }
 
-export interface Application {
-  contextPath: string;
-  running: boolean;
-  docBase: string;
-  sessions: number;
-  readOnly: boolean;
-}
-
-export interface Config {
-  tomcatHost: string;
-}

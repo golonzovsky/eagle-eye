@@ -6,12 +6,12 @@ import {HttpModule} from '@angular/http';
 import {AppComponent} from './app.component';
 import {DeployManagerService} from './deploy-manager.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {SpinkitWaveComponent} from './spinkit-wave/spinkit-wave.component';
+import {UndeployActionComponent} from './undeploy-action/undeploy-action.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    SpinkitWaveComponent
+    UndeployActionComponent
   ],
   imports: [
     BrowserModule,

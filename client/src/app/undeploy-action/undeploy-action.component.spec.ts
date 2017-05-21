@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SpinkitWaveComponent } from './spinkit-wave.component';
+import { UndeployActionComponent } from './undeploy-action.component';
 
-describe('SpinkitWaveComponent', () => {
-  let component: SpinkitWaveComponent;
-  let fixture: ComponentFixture<SpinkitWaveComponent>;
+describe('UndeployActionComponent', () => {
+  let component: UndeployActionComponent;
+  let fixture: ComponentFixture<UndeployActionComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SpinkitWaveComponent ]
+      declarations: [ UndeployActionComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SpinkitWaveComponent);
+    fixture = TestBed.createComponent(UndeployActionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

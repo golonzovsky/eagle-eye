@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
-import {Application} from './app.component';
 import 'rxjs/add/operator/map';
 
 @Injectable()
@@ -24,4 +23,12 @@ export class DeployManagerService {
     return this.http.delete('http://localhost:8181/undeploy?path=' + path)
       .map(res => res.json().success);
   }
+}
+
+export class Application {
+  contextPath: string;
+  running: boolean;
+  docBase: string;
+  sessions: number;
+  readOnly: boolean;
 }
