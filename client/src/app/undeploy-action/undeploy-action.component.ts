@@ -4,7 +4,7 @@ import {Application, DeployManagerService} from "../deploy-manager.service";
 @Component({
   selector: 'undeploy-action',
   template: `
-    <i *ngIf="!inProgress" class='fa fa-times text-center' [class.disabled]="app.readOnly" (click)='undeploy()'></i>
+    <i *ngIf="!inProgress" class='fa fa-times text-center' [class.disabled]="app.readonly" (click)='undeploy()'></i>
 
     <div *ngIf="inProgress" class="sk-wave">
       <div class="sk-rect sk-rect1"></div>
@@ -43,6 +43,10 @@ export class UndeployActionComponent {
   }
 
   private undeploy() {
+    if (this.app.readonly) {
+      return;
+    }
+
     this.inProgress = true;
     this.deployManagerService.undeploy(this.app.contextPath)
       .subscribe(isSuccess => {

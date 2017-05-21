@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -41,14 +42,19 @@ public class EagleEyeApplication {
 @RestController
 class AppsController {
 
-    public static final String UNDEPLOY_OK_PREFIX = "OK - Undeployed application at context path";
-    public static final String APP_LIST_OK_PREFIX = "OK - Listed applications for virtual host";
+    private static final String UNDEPLOY_OK_PREFIX = "OK - Undeployed application at context path";
+    private static final String APP_LIST_OK_PREFIX = "OK - Listed applications for virtual host";
 
     @Autowired
     RestOperations restTemplate;
 
     @Autowired
     TargetTomcatProperties configProps;
+
+    @PostConstruct
+    void init() {
+        log.info("using config props: {}", configProps);
+    }
 
     @DeleteMapping("undeploy")
     UndeployResult undeploy(@RequestParam("path") String path) {

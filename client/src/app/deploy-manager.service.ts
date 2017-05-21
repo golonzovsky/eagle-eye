@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {Http} from '@angular/http';
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
+import {Injectable} from "@angular/core";
+import {Http} from "@angular/http";
+import {Observable} from "rxjs/Observable";
+import "rxjs/add/operator/map";
 
 @Injectable()
 export class DeployManagerService {
@@ -30,5 +30,5 @@ export class Application {
   running: boolean;
   docBase: string;
   sessions: number;
-  readOnly: boolean;
+  readonly: boolean;
 }
