@@ -4,23 +4,19 @@ import {Application, DeployManagerService} from "../deploy-manager.service";
 @Component({
   selector: 'undeploy-action',
   template: `
-    <div *ngIf="!this.app.readOnly; else disabled">
-      <i class='fa fa-times text-center' (click)='undeploy()'></i>
-    </div>
-    <ng-template #disabled>
-      <i #disabled class='fa fa-times text-center disabled'></i>
-    </ng-template>
-    
-    <div class="sk-wave">
+    <i *ngIf="!inProgress" class='fa fa-times text-center' [class.disabled]="app.readOnly" (click)='undeploy()'></i>
+
+    <div *ngIf="inProgress" class="sk-wave">
       <div class="sk-rect sk-rect1"></div>
       <div class="sk-rect sk-rect2"></div>
       <div class="sk-rect sk-rect3"></div>
       <div class="sk-rect sk-rect4"></div>
       <div class="sk-rect sk-rect5"></div>
-    </div>`,
+    </div>
+  `,
   styles: [`
     div.sk-wave {
-      margin: 0;
+      margin: -10px 8px;
     }
 
     i.fa {
@@ -38,16 +34,16 @@ import {Application, DeployManagerService} from "../deploy-manager.service";
 })
 export class UndeployActionComponent {
 
-  @Input()
-  app: Application;
+  inProgress = false;
 
-  @Output()
-  undeployEvent = new EventEmitter<Application>();
+  @Input() app: Application;
+  @Output() undeployEvent = new EventEmitter<Application>();
 
   constructor(private deployManagerService: DeployManagerService) {
   }
 
   private undeploy() {
+    this.inProgress = true;
     this.deployManagerService.undeploy(this.app.contextPath)
       .subscribe(isSuccess => {
           if (isSuccess) {
