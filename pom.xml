@@ -74,7 +74,6 @@
                         <configuration>
                             <nodeVersion>v6.10.3</nodeVersion>
                             <yarnVersion>v0.24.5</yarnVersion>
-                            <installDirectory>target/</installDirectory>
                         </configuration>
                     </execution>
                     <execution>
@@ -82,9 +81,6 @@
                         <goals>
                             <goal>yarn</goal>
                         </goals>
-                        <configuration>
-                            <workingDirectory>client</workingDirectory>
-                        </configuration>
                     </execution>
                     <execution>
                         <id>yarn run build</id>
@@ -93,10 +89,12 @@
                         </goals>
                         <configuration>
                             <arguments>run build</arguments>
-                            <workingDirectory>client</workingDirectory>
                         </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <workingDirectory>client</workingDirectory>
+                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
