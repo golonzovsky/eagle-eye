@@ -1,13 +1,12 @@
 version: '2'
-services:
 
+services:
   build-client:
       build:
         context: ./client
         dockerfile: Dockerfile.build-client
       volumes:
         - dist:/dist
-
   serve:
       image: nginx
       ports:
