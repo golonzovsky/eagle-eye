@@ -1,7 +1,9 @@
 .git
 .gitignore
 .env*
-node_modules
-node
+
+client/node_modules
+client/node
 client/docker-compose.yml
+
 target
