@@ -19,5 +19,5 @@ cache:
 script:
 - ./mvnw package -e
 - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-- docker build -f target/docker/Dockerfile target
-- docker push golonzovsky/eagle-eye:latest
+- docker build -f target/docker/Dockerfile -t $DOCKER_USERNAME/eagle-eye:latest target
+- docker push $DOCKER_USERNAME/eagle-eye:latest
