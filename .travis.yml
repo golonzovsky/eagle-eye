@@ -3,14 +3,20 @@ language: java
 jdk:
   - oraclejdk8
 
-sudo: false
+sudo: required
 
-install: true
-
-script: ./mvnw install -e
+services:
+  - docker
 
 cache:
+  yarn: true
   directories:
     - '$HOME/.m2/repository'
     - '$HOME/.m2/wrapper'
-    - 'download'
+    - 'client/node_modules'
+    - 'client/node'
+
+script:
+- ./mvnw package -e
+- docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+- ./mvnw docker:build -Dpush
