@@ -1,10 +1,7 @@
 language: java
-
 jdk:
   - oraclejdk8
-
 sudo: required
-
 services:
   - docker
 
@@ -16,12 +13,9 @@ cache:
     - 'client/node_modules'
     - 'client/node'
 
+install: true
 script:
-- ./mvnw package -e
+  - ./mvnw package -e
 
 after_success:
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then
-    docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-    docker build -f target/dockerfile/Dockerfile -t $DOCKER_USERNAME/eagle-eye:latest target
-    docker push $DOCKER_USERNAME/eagle-eye:latest
-    fi
+  - ./.travis-push-docker.sh
