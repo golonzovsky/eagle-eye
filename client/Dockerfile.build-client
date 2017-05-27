@@ -1,0 +1,16 @@
+FROM node:7
+
+ENV REFRESHED_AT 2017-06-26
+
+RUN yarn global add @angular/cli
+RUN ng set --global packageManager=yarn
+
+COPY . /build
+WORKDIR /build
+
+RUN yarn
+RUN ng build
+
+RUN mv dist /
+
+VOLUME /dist

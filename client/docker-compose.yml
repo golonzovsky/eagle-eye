@@ -1,0 +1,21 @@
+version: '2'
+services:
+
+  build-dist:
+      build:
+        context: .
+        dockerfile: Dockerfile.build-client
+      volumes:
+        - dist:/dist
+
+  serve:
+      image: nginx
+      ports:
+        - "127.0.0.1:80:80"
+      depends_on:
+        - build-dist
+      volumes:
+        - dist:/usr/share/nginx/html:ro
+
+volumes:
+   dist:
