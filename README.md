@@ -12,3 +12,4 @@ mostly just playground for fullstack project on angular4, bootstrap4, spring-boo
 - [ ] make docker to see host tomcat (does it even make sense?)
 - [x] travis build
 - [ ] travis push docker image to hub
+- [ ] compose setup with separate backend and frontend in different containers + CORS 
