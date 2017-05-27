@@ -139,7 +139,8 @@
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>0.4.13</version>
                 <configuration>
-                    <imageName>golonzovsky/${project.artifactId}:${project.version}</imageName>
+                    <imageName>golonzovsky/${project.artifactId}</imageName>
+                    <imageTags>${project.version}</imageTags>
                     <dockerDirectory>${basedir}/target/dockerfile</dockerDirectory>
                     <resources>
                         <resource>
