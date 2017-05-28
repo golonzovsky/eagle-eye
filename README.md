@@ -7,11 +7,11 @@ mostly just playground for fullstack project on spring-boot, angular4, bootstrap
 - [x] icon
 - [x] unactive list
 - [x] 'remove item' animation
-- [x] SSE update list un undeploy 
-- [ ] SSE keepalives/reconnect
+- [x] SSE update list on undeploy (https://hpbn.co/server-sent-events-sse/, https://www.youtube.com/watch?v=nxakp15CACY)
+- [x] SSE reconnect
 - [ ] websocket/SSE update list on new apps. polling tomcat for list? 
 - [x] docker `docker run -p 127.0.0.1:80:8181 golonzovsky/eagle-eye`
-- [ ] make docker to see host tomcat (does it even make sense?)
 - [x] travis build
 - [ ] travis push docker image to hub
+- [ ] set client api url to / on bundled .jar 
 - [ ] compose setup with separate backend and frontend in different containers + CORS 

@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -12,11 +12,11 @@ import {Component} from "@angular/core";
           <p class='lead'>Tomcat manager exposed in browser for use and abuse</p>
         </div>
 
-        <div class='col-12 col-sm-8'>
+        <div class='col-12 col-md-8'>
           <app-list></app-list>
         </div>
         
-        <div class='col-sm-4 hidden-xs-down'><img src='/assets/jerry.jpg' width='150px'></div>
+        <div class='col-sm-4 hidden-md-down'><img src='/assets/jerry.jpg' width='150px'></div>
         
       </div>
     </div>

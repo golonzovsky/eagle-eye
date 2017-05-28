@@ -16,8 +16,8 @@ export class DeployManagerService {
 
     this.undeployEvents = Observable.create(observer => {
       const eventSource = new EventSource(this.url + '/sse-stream');
-      //eventSource.onmessage = x => observer.error(x); no type
-      eventSource.onerror = x => observer.error(x);//todo reconnect?
+      //eventSource.onerror = x => observer.error(x); - blocks reconnects
+      //eventSource.onmessage = e => {if (e.id == 'CLOSE') eventSource.close();} //no type
       eventSource.addEventListener('undeploy', x => observer.next(x.data));
       return () => eventSource.close();
     });

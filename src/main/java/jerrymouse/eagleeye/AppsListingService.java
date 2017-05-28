@@ -1,7 +1,7 @@
 package jerrymouse.eagleeye;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -17,28 +17,27 @@ import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class AppsListingService {
 
     private static final String UNDEPLOY_OK_PREFIX = "OK - Undeployed application at context path";
     private static final String APP_LIST_OK_PREFIX = "OK - Listed applications for virtual host";
 
-    @Autowired
-    private RestOperations restTemplate;
+    private final RestOperations restTemplate;
+    private final TargetTomcatProperties configProps;
 
-    @Autowired
-    private TargetTomcatProperties configProps;
+    private List<SseEmitter> emitters = new CopyOnWriteArrayList<>();
 
     @PostConstruct
     void init() {
         log.info("using config props: {}", configProps);
     }
 
-    private List<SseEmitter> emitters = new CopyOnWriteArrayList<>();
-
     SseEmitter getEmitter() {
         SseEmitter emitter = new SseEmitter();
-        emitters.add(emitter);
         emitter.onCompletion(() -> emitters.remove(emitter));
+        emitter.onTimeout(() -> emitters.remove(emitter));
+        emitters.add(emitter);
         return emitter;
     }
 
@@ -51,17 +50,7 @@ public class AppsListingService {
     }
 
     //todo consider moving subscription logic to separate service with ApplicationEvent messaging to avoid blocking main logic on notifications
-    private void notifyListenersOnUndeploy(String path) {
-        for (SseEmitter emitter : emitters) {
-            try {
-                emitter.send(SseEmitter.event().name("undeploy").data(path));
-            } catch (IOException e) {
-                log.debug("subscriber notification failure", e);
-            }
-        }
-    }
-
-    public List<Application> apps() {
+    List<Application> apps() {
         String appsText = restTemplate.getForObject(configProps.getManagerAddress() + "list", String.class);
         if (!appsText.startsWith(APP_LIST_OK_PREFIX)) {
             log.warn("invalid response from tomcat manager: ", appsText);
@@ -73,6 +62,16 @@ public class AppsListingService {
                 .map(s -> s.split(":"))
                 .map(this::buildApp)
                 .collect(toList());
+    }
+
+    private void notifyListenersOnUndeploy(String path) {
+        for (SseEmitter emitter : emitters) {
+            try {
+                emitter.send(SseEmitter.event().name("undeploy").data(path));
+            } catch (IOException e) {
+                log.debug("subscriber notification failure", e);
+            }
+        }
     }
 
     private Application buildApp(String[] props) {
