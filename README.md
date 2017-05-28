@@ -25,3 +25,4 @@ Mostly just playground for fullstack project on spring-boot, angular4, bootstrap
 - [HPBN: SSE](https://hpbn.co/server-sent-events-sse/)
 - [From Zero to Hero with Spring WebSocket](https://www.youtube.com/watch?v=nxakp15CACY)
 - [Deep dive into Spring WebSockets](https://www.youtube.com/watch?v=oCAC2yow8xk)
+- [Angular and Angular CLI Demo](https://github.com/mraible/ng-demo/)
