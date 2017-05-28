@@ -11,7 +11,7 @@ Mostly just playground for fullstack project on spring-boot, angular4, bootstrap
 - [x] bundled .jar
 - [x] SSE update list on undeploy
 - [x] SSE reconnect
-- [ ] websocket/SSE update list on new apps. cron polling tomcat for changes? 
+- [ ] websocket/SSE update list on new apps. cron polling tomcat for changes? maybe spring-integration inboundAdapter poller
 - [x] docker `docker run -p 127.0.0.1:80:8181 golonzovsky/eagle-eye`
 - [x] docker compose
 - [x] travis build
@@ -19,6 +19,46 @@ Mostly just playground for fullstack project on spring-boot, angular4, bootstrap
 - [ ] set client api url to / on bundled .jar 
 - [ ] compose setup with separate backend and frontend in different containers + CORS 
 - [ ] spring reactive webflux instead of MVC 
+
+### Useful tooling
+
+```
+~ $ curl localhost:8181/sse-stream
+event:undeploy
+data:/asddd
+
+event:undeploy
+data:/asdasdasdasdasd
+
+event:undeploy
+data:/host-manager
+
+event:undeploy
+data:/examples (copy)
+
+event:undeploy
+data:/deployed-app
+```
+
+```
+~ $ curl -s localhost:8181/apps | jq
+[
+  {
+    "contextPath": "/",
+    "docBase": "ROOT",
+    "running": true,
+    "sessions": 0,
+    "readonly": true
+  },
+  {
+    "contextPath": "/asddd",
+    "docBase": "asddd",
+    "running": true,
+    "sessions": 0,
+    "readonly": false
+  },
+...
+```
 
 ### Links and resources
 - [Spring Tips: Server Sent Events (SSE) in Spring MVC and Spring WebFlux](https://www.youtube.com/watch?v=2To3_mYT2hc)
