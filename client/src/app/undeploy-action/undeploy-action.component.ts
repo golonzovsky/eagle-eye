@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, Output} from "@angular/core";
-import {Application, DeployManagerService} from "../deploy-manager.service";
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Application, DeployManagerService} from '../deploy-manager.service';
 
 @Component({
   selector: 'undeploy-action',
@@ -37,7 +37,7 @@ export class UndeployActionComponent {
   inProgress = false;
 
   @Input() app: Application;
-  @Output() undeployEvent = new EventEmitter<Application>();
+  @Output() undeployEvent = new EventEmitter<string>();
 
   constructor(private deployManagerService: DeployManagerService) {
   }
@@ -51,9 +51,9 @@ export class UndeployActionComponent {
     this.deployManagerService.undeploy(this.app.contextPath)
       .subscribe(isSuccess => {
           if (isSuccess) {
-            this.undeployEvent.emit(this.app);
+            this.undeployEvent.emit(this.app.contextPath);
           } else {
-            console.log('cannot delete.. must be stronger!!');
+            console.log('cannot undeploy.. must be stronger!!');
           }
         }
       );

@@ -12,13 +12,9 @@ import org.springframework.http.client.support.BasicAuthorizationInterceptor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import javax.annotation.PostConstruct;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @SpringBootApplication
 @EnableConfigurationProperties(TargetTomcatProperties.class)
@@ -42,26 +38,15 @@ public class EagleEyeApplication {
 @RestController
 class AppsController {
 
-    private static final String UNDEPLOY_OK_PREFIX = "OK - Undeployed application at context path";
-    private static final String APP_LIST_OK_PREFIX = "OK - Listed applications for virtual host";
-
-    @Autowired
-    RestOperations restTemplate;
-
     @Autowired
     TargetTomcatProperties configProps;
 
-    @PostConstruct
-    void init() {
-        log.info("using config props: {}", configProps);
-    }
+    @Autowired
+    AppsListingService appsListingService;
 
     @DeleteMapping("undeploy")
-    UndeployResult undeploy(@RequestParam("path") String path) {
-        if (configProps.getBlockContexts().contains(path)) return new UndeployResult(false);
-        //todo filter path
-        String resp = restTemplate.getForObject(configProps.getManagerAddress() + "undeploy?path=" + path, String.class);
-        return new UndeployResult(resp.startsWith(UNDEPLOY_OK_PREFIX));
+    UndeployResult undeploy(@RequestParam("path") String path, @RequestParam(value = "dryRun", defaultValue = "false") Boolean dryRun) {
+        return appsListingService.undeploy(path, dryRun);
     }
 
     @GetMapping("config")
@@ -71,23 +56,12 @@ class AppsController {
 
     @GetMapping("apps")
     List<Application> apps() {
-        String appsText = restTemplate.getForObject(configProps.getManagerAddress() + "list", String.class);
-        if (!appsText.startsWith(APP_LIST_OK_PREFIX)) {
-            log.warn("invalid response from tomcat manager: ", appsText);
-            return Collections.emptyList();
-        }
-        String[] appLines = appsText.split("\n");
-        return Arrays.stream(appLines)
-                .skip(1)
-                .map(s -> s.split(":"))
-                //.peek(propArr -> System.out.println("\n\narray:   " + Arrays.asList(propArr) + "\n\n"))
-                .map(this::buildApp)
-                .collect(toList());
+        return appsListingService.apps();
     }
 
-    private Application buildApp(String[] props) {
-        boolean isReadOnly = configProps.getBlockContexts().contains(props[0]);
-        return new Application(props[0], props[3], "running".equals(props[1]), Long.parseLong(props[2]), isReadOnly);
+    @RequestMapping("/sse-stream")
+    public SseEmitter subscribeMetrics() {
+        return appsListingService.getEmitter();
     }
 }
 

@@ -1,6 +1,6 @@
-import {Component, OnInit} from "@angular/core";
-import {Application, DeployManagerService} from "../deploy-manager.service";
-import {animate, style, transition, trigger} from "@angular/animations";
+import {Component, OnInit} from '@angular/core';
+import {Application, DeployManagerService} from '../deploy-manager.service';
+import {animate, style, transition, trigger} from '@angular/animations';
 
 @Component({
   selector: 'app-list',
@@ -22,7 +22,7 @@ import {animate, style, transition, trigger} from "@angular/animations";
         <td class='hidden-xs-down'>{{app.sessions}}</td>
         <td class='hidden-xs-down'>{{app.docBase}}</td>
         <td class='hidden-xs-down'>
-          <undeploy-action [app]="app" (undeployEvent)="undeploy($event)"></undeploy-action>
+          <undeploy-action [app]="app" (undeployEvent)="onUndeployNotificationEvent($event)"></undeploy-action>
         </td>
       </tr>
       </tbody>
@@ -50,14 +50,14 @@ export class AppListComponent implements OnInit {
 
   ngOnInit(): void {
     this.deployManagerService.getApps().subscribe(apps => this.apps = apps);
-    this.deployManagerService.getTomcatHost().subscribe(tomcatHost => {
-      console.log(" host " + tomcatHost);
-      return this.tomcatHost = tomcatHost;
-    });
+    this.deployManagerService.getTomcatHost().subscribe(tomcatHost => this.tomcatHost = tomcatHost);
+    this.deployManagerService.undeployEvents.subscribe(
+      path => this.onUndeployNotificationEvent(path),
+      err => console.error('something wrong occurred with SSE connection: ' + JSON.stringify(err)))
   }
 
-  private undeploy(app: Application) {
-    this.apps = this.apps.filter(item => item !== app);
+  private onUndeployNotificationEvent(path: string) {
+    this.apps = this.apps.filter(item => item.contextPath !== path);
   }
 
 }
