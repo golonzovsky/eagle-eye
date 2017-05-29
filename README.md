@@ -1,6 +1,6 @@
 # open tomcat manger web ui [![Build Status](https://travis-ci.org/golonzovsky/eagle-eye.svg?branch=master)](https://travis-ci.org/golonzovsky/eagle-eye)
 Tomcat manager ui for navigating and undeploying apps.
-Mostly just playground for fullstack project on spring-boot, angular4, bootstrap4, SSE, websockets, docker, travis..
+Mostly just playground for fullstack project on spring-boot, angular4, bootstrap4, SSE, websockets, docker, travis..  
 
 ![help_animation_sorry_for_filesize.gif](help_animation_sorry_for_filesize.gif)
 
