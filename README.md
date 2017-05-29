@@ -18,7 +18,9 @@ Mostly just playground for fullstack project on spring-boot, angular4, bootstrap
 - [ ] travis push docker image to hub
 - [ ] set client api url to / on bundled .jar 
 - [ ] compose setup with separate backend and frontend in different containers + CORS 
-- [ ] spring reactive webflux instead of MVC 
+- [ ] spring WebFlux instead of MVC on reactive-web from boot 2.0
+- [ ] spring asciidocs? 
+- [ ] github oauth login
 
 ### Useful tooling
 
