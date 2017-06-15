@@ -14,6 +14,7 @@ Mostly just playground for fullstack project on spring-boot, angular4, bootstrap
 - [ ] websocket/SSE update list on new apps. cron polling tomcat for changes? maybe spring-integration inboundAdapter poller
 - [x] docker `docker run -p 127.0.0.1:80:8181 golonzovsky/eagle-eye`
 - [x] docker compose
+- [ ] kubernetes deploy
 - [x] travis build
 - [ ] travis push docker image to hub
 - [ ] set client api url to / on bundled .jar 
